@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Error <%= status %></title>
+</head>
+<body>
+  <h1><%= message %></h1>
+  <p>Status code: <%= status %></p>
+
+  <% if(error?.stack) { %>
+    <h2>Stack Trace</h2>
+    <pre><%= error.stack %></pre>
+  <% } %>
+
+</body>
+</html>
