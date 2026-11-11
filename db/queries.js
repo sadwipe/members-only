@@ -12,14 +12,32 @@ export async function findUserById(id) {
   return rows[0] || null;
 }
 
-export async function findUserByName(name) {
+export async function findUserByUsername(username) {
   const SQL = `
     SELECT *
     FROM users
-    WHERE name = $1
+    WHERE username = $1
   `;
 
-  const { rows } = await pool.query(SQL, [name]);
+  const { rows } = await pool.query(SQL, [username]);
+
+  return rows[0] || null;
+}
+
+export async function createUser(firstName, lastName, username, passwordHash) {
+  const SQL = `
+    INSERT
+    INTO users (first_name, last_name, username, password_hash)
+    VALUES ($1, $2, $3, $4)
+    RETURNING username
+  `;
+
+  const { rows } = await pool.query(SQL, [
+    firstName,
+    lastName,
+    username,
+    passwordHash,
+  ]);
 
   return rows[0] || null;
 }

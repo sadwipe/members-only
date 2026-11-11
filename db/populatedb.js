@@ -34,7 +34,6 @@ async function seed() {
       first_name VARCHAR(100) NOT NULL,
       last_name VARCHAR(100) NOT NULL,
       username VARCHAR(30) UNIQUE NOT NULL,
-      email CITEXT UNIQUE NOT NULL CHECK (length(email) <= 254),
       password_hash VARCHAR(255) NOT NULL,
       membership_status BOOLEAN NOT NULL DEFAULT FALSE,
       is_admin BOOLEAN NOT NULL DEFAULT FALSE
@@ -50,12 +49,12 @@ async function seed() {
   `;
 
   const insertUsersQuery = `
-    INSERT INTO users (first_name, last_name, username, email, password_hash)
+    INSERT INTO users (first_name, last_name, username, password_hash)
     VALUES
-      ('Natalie', 'Parsons', 'natalieparsons', 'natalieparsons@gmail.com', $1),
-      ('Lewis', 'Brewer', 'lewisbrewer', 'lewisbrewer@gmail.com', $2),
-      ('Abram', 'Sharp', 'abramsharp', 'abramsharp@gmail.com', $3),
-      ('Baylor', 'Booker', 'baylorbooker', 'baylorbooker@gmail.com', $4);
+      ('Natalie', 'Parsons', 'natalieparsons', $1),
+      ('Lewis', 'Brewer', 'lewisbrewer', $2),
+      ('Abram', 'Sharp', 'abramsharp', $3),
+      ('Baylor', 'Booker', 'baylorbooker', $4);
   `;
 
   const insertMessagesQuery = `

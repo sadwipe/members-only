@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <style>
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      text-decoration: none;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h2>Register</h2>
+  <form action="/register" method="POST">
+    <div>
+      <label for="firstName">First name:</label>
+      <input autofocus minlength="3" maxlength="30" type="text" name="firstName" id="firstName" required>
+    </div>
+    <div>
+      <label for="lastName">Last name:</label>
+      <input type="text" minlength="3" maxlength="30" name="lastName" id="lastName" required>
+    </div>
+    <div>
+      <label for="username">Username:</label>
+      <input type="text" minlength="3" maxlength="30" name="username" id="username" required>
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" required>
+    </div>
+    <div>
+      <label for="confirmPassword">Confirm Password:</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" required>
+    </div>
+    <button type="submit">Register</button>
+    <% if(locals.errors?.length) { %>
+      <ul>
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </form>
+</body>
+</html>

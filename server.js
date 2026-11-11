@@ -5,6 +5,8 @@ import helmet from 'helmet';
 import passport from 'passport';
 
 import './config/passport.js';
+import indexRouter from './routes/indexRouter.js';
+import authRouter from './routes/authRouter.js';
 import sessionMiddleware from './config/session.js';
 import { notFoundHandler, errorHandler } from './middleware/errors.js';
 
@@ -18,6 +20,9 @@ app.use(helmet());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 app.use(passport.session());
+
+app.use(authRouter);
+app.use(indexRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

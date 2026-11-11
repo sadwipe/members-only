@@ -2,12 +2,12 @@ import passport from 'passport';
 import bcrypt from 'bcrypt';
 import { Strategy as LocalStrategy } from 'passport-local';
 
-import { findUserById, findUserByName } from '../db/queries.js';
+import { findUserById, findUserByUsername } from '../db/queries.js';
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      const user = await findUserByName(username);
+      const user = await findUserByUsername(username);
 
       if (!user) {
         done(null, false, { message: 'Invalid credentials' });

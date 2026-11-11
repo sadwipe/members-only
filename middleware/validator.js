@@ -1,0 +1,51 @@
+import { body } from 'express-validator';
+
+import { findUserByUsername } from '../db/queries.js';
+
+function nameValidator(fieldname, label, { min = 2, max = 50 }) {
+  return body(fieldname)
+    .trim()
+    .notEmpty()
+    .withMessage(`${label} cannot be empty.`)
+    .isAlpha('en-US', { ignore: " -'" })
+    .withMessage(`${label} must consist only of letters.`)
+    .isLength({ min, max })
+    .withMessage(
+      `${label} length must be between ${min} and ${max} characters.`
+    );
+}
+
+export const validateNewUser = [
+  nameValidator('firstName', 'First Name', { min: 3, max: 30 }),
+  nameValidator('lastName', 'Last Name', { min: 3, max: 30 }),
+  body('username')
+    .trim()
+    .notEmpty()
+    .withMessage('Username cannot be empty.')
+    .isAlphanumeric('en-US')
+    .withMessage('Username must consist only of letters and numbers.')
+    .isLength({ min: 3, max: 20 })
+    .withMessage('Username length must be between 3 and 30 characters.')
+    .custom(async (username) => {
+      const foundUser = await findUserByUsername(username);
+      if (foundUser) {
+        throw new Error('Username already exists.');
+      }
+    }),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Password is required.')
+    .isLength({ min: 6 })
+    .withMessage('Password must be at least 6 characters long.'),
+  body('confirmPassword')
+    .trim()
+    .notEmpty()
+    .withMessage('Please confirm your password')
+    .custom((confirmPassword, { req }) => {
+      if (confirmPassword !== req.body.password) {
+        throw new Error('Passwords do not match.');
+      }
+      return true;
+    }),
+];
