@@ -3,10 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
+  <title>Login</title>
+  <style>
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+    .success {
+    padding: 2px 4px;
+      background-color: lightgreen;
+      width: fit-content;
+    }
+    .error {
+      padding: 2px 4px;
+      background-color: lightcoral;
+      width: fit-content;
+    }
+  </style>
 </head>
 <body>
-  <h2>Register</h2>
+  <h2>Login</h2>
+  <% if(locals.success?.length) { %>
+    <ul>
+      <% success.forEach(message => { %>
+        <li class="success"><%= message %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+  <% if(locals.error?.length) { %>
+    <ul>
+      <% error.forEach(message => { %>
+        <li class="error"><%= message %></li>
+      <% }) %>
+    </ul>
+  <% } %>
   <form action="/login" method="POST">
     <div>
       <label autofocus for="username">Username:</label>

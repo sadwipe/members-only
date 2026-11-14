@@ -19,12 +19,12 @@
   <h2>Register</h2>
   <form action="/register" method="POST">
     <div>
-      <label for="firstName">First name:</label>
-      <input autofocus minlength="3" maxlength="30" type="text" name="firstName" id="firstName" required>
+      <label for="first-name">First name:</label>
+      <input autofocus minlength="3" maxlength="30" type="text" name="first-name" id="first-name" required>
     </div>
     <div>
-      <label for="lastName">Last name:</label>
-      <input type="text" minlength="3" maxlength="30" name="lastName" id="lastName" required>
+      <label for="last-name">Last name:</label>
+      <input type="text" minlength="3" maxlength="30" name="last-name" id="last-name" required>
     </div>
     <div>
       <label for="username">Username:</label>
@@ -35,8 +35,8 @@
       <input type="password" name="password" id="password" required>
     </div>
     <div>
-      <label for="confirmPassword">Confirm Password:</label>
-      <input type="password" name="confirmPassword" id="confirmPassword" required>
+      <label for="confirm-password">Confirm Password:</label>
+      <input type="password" name="confirm-password" id="confirm-password" required>
     </div>
     <button type="submit">Register</button>
     <% if(locals.errors?.length) { %>

@@ -16,8 +16,8 @@ function nameValidator(fieldname, label, { min = 2, max = 50 }) {
 }
 
 export const validateNewUser = [
-  nameValidator('firstName', 'First Name', { min: 3, max: 30 }),
-  nameValidator('lastName', 'Last Name', { min: 3, max: 30 }),
+  nameValidator('first-name', 'First Name', { min: 3, max: 30 }),
+  nameValidator('last-name', 'Last Name', { min: 3, max: 30 }),
   body('username')
     .trim()
     .notEmpty()
@@ -38,12 +38,12 @@ export const validateNewUser = [
     .withMessage('Password is required.')
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters long.'),
-  body('confirmPassword')
+  body('confirm-password')
     .trim()
     .notEmpty()
     .withMessage('Please confirm your password')
-    .custom((confirmPassword, { req }) => {
-      if (confirmPassword !== req.body.password) {
+    .custom((value, { req }) => {
+      if (value !== req.body.password) {
         throw new Error('Passwords do not match.');
       }
       return true;

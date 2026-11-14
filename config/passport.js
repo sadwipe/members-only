@@ -10,16 +10,16 @@ passport.use(
       const user = await findUserByUsername(username);
 
       if (!user) {
-        done(null, false, { message: 'Invalid credentials' });
+        return done(null, false, { message: 'Invalid credentials' });
       }
 
-      const match = await bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.password_hash);
 
       if (!match) {
-        done(null, false, { message: 'Invalid credentials' });
+        return done(null, false, { message: 'Invalid credentials' });
       }
 
-      done(null, user);
+      return done(null, user);
     } catch (err) {
       done(err);
     }

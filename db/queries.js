@@ -29,7 +29,7 @@ export async function createUser(firstName, lastName, username, passwordHash) {
     INSERT
     INTO users (first_name, last_name, username, password_hash)
     VALUES ($1, $2, $3, $4)
-    RETURNING username
+    RETURNING id, first_name as "firstName", last_name as "lastName", username, membership_status as status, is_admin as "isAdmin"
   `;
 
   const { rows } = await pool.query(SQL, [

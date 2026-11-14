@@ -1,3 +1,4 @@
+import passport from 'passport';
 import { validationResult, matchedData } from 'express-validator';
 import bcrypt from 'bcrypt';
 
@@ -16,7 +17,12 @@ export const createUser = async (req, res) => {
     return res.status(400).render('register', { errors: errors.array() });
   }
 
-  const { firstName, lastName, username, password } = matchedData(req);
+  const {
+    'first-name': firstName,
+    'last-name': lastName,
+    username,
+    password,
+  } = matchedData(req);
 
   const passwordHash = await bcrypt.hash(password, 10);
 
@@ -27,8 +33,10 @@ export const createUser = async (req, res) => {
     passwordHash
   );
 
-  console.log(user);
-
+  req.flash(
+    'success',
+    `User ${user.username} successfully created! You can log in now.`
+  );
   res.redirect('/login');
 };
 
@@ -38,7 +46,25 @@ export const getLoginForm = (req, res) => {
 };
 
 // POST /login
-export const authenticateUser = (_req, _res) => {};
+export const authenticateUser = (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      req.flash('error', info?.message || 'Invalid credentials');
+      return res.redirect('/login');
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      req.flash('success', "You've successfully logged in");
+      return res.redirect('/');
+    });
+  })(req, res, next);
+};
 
 // POST /logout
 export const logOutUser = (req, res, next) => {
