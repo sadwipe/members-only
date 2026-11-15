@@ -41,3 +41,23 @@ export async function createUser(firstName, lastName, username, passwordHash) {
 
   return rows[0] || null;
 }
+
+export async function getAllMessages() {
+  const SQL = `
+    SELECT *
+    FROM messages;
+  `;
+
+  const { rows } = await pool.query(SQL);
+
+  return rows;
+}
+
+export async function updateUserMembership(id) {
+  const SQL = `
+    UPDATE users
+    SET membership_status = true
+    WHERE id = $1
+  `;
+  return await pool.query(SQL, [id]);
+}

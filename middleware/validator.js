@@ -49,3 +49,10 @@ export const validateNewUser = [
       return true;
     }),
 ];
+
+export const validateMembership = body('membership-code')
+  .trim()
+  .notEmpty()
+  .withMessage('Message required')
+  .isLength({ min: 3, max: 20 })
+  .withMessage('The membership code has between 3 and 20 characters.');

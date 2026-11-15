@@ -18,7 +18,15 @@ const PORT = process.env.PORT || 3000;
 app.set('views', join(import.meta.dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'https://cdn.tailwindcss.com', "'unsafe-eval'"],
+    },
+  })
+);
+
 app.use(express.urlencoded({ extended: true }));
 app.use(sessionMiddleware);
 app.use(passport.session());

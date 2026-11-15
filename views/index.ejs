@@ -1,27 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Homepage</title>
-  <style>
-    ul {
-      padding: 0;
-      list-style: none;
-    }
-    .success {
-      padding: 2px 4px;
-      background-color: lightgreen;
-      width: fit-content;
-    }
-  </style>
-</head>
-<body>
-  <h2>This is a protected route</h2>
-  <% if(locals.success?.length) { %>
+<html lang="en" class="h-full bg-gray-50">
+<%- include('head', { title: 'Homepage' }) %>
+<body class="h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+  <% if(locals.currentUser) { %>
+    <button><a href="/create-message">Create a new message</a></button>
+  <% } %>
+  <div class="max-w-md w-full space-y-6 bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
+    <h2 class="text-2xl font-extrabold text-gray-900">This is a protected route</h2>
+
+    <% if(locals.success?.length) { %>
+      <ul class="space-y-1 text-left">
+        <% success.forEach(message => { %>
+          <li class="text-sm text-green-600 bg-green-50 border border-green-200 p-3 rounded-md"><%= message %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <div class="pt-2 space-y-3">
+      <a href="/membership" class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+        Join the club
+      </a>
+      
+      <form action="/logout" method="POST">
+        <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+          Log out
+        </button>
+      </form>
+    </div>
+  </div>
+  <% if(locals.messages?.length) { %>
     <ul>
-      <% success.forEach(message => { %>
-        <li class="success"><%= message %></li>
+      <% messages.forEach(message => { %>
+        <div class="message-card">
+
+        </div>
       <% }) %>
     </ul>
   <% } %>
