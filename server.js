@@ -13,6 +13,7 @@ import setLocalsMiddleware from './middleware/locals.js';
 import { notFoundHandler, errorHandler } from './middleware/errors.js';
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3000;
 
 app.set('views', join(import.meta.dirname, 'views'));
