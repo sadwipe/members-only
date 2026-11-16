@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node --watch server.js",
     "seed": "node db/populatedb.js",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "format": "prettier --write .",
     "lint": "eslint --fix",
     "start": "node server.js"
