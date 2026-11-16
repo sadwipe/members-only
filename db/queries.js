@@ -75,3 +75,27 @@ export async function createMessage(id, title, message) {
   const { rows } = await pool.query(SQL, [id, title, message]);
   return rows[0] || null;
 }
+
+export async function updateUserAdminStatus(userId, status) {
+  const SQL = `
+    UPDATE users
+    SET is_admin = $2
+    WHERE id = $1
+  `;
+
+  return await pool.query(SQL, [userId, status]);
+}
+
+export async function findUserMessageByTitle(userId, title) {
+  const SQL = `
+    SELECT messages.id
+    FROM messages
+    JOIN users
+    ON messages.user_id = $1
+    WHERE title = $2
+  `;
+
+  const { rows } = await pool.query(SQL, [userId, title]);
+
+  return rows[0] || null;
+}

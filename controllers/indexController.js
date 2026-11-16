@@ -4,6 +4,8 @@ import {
   getAllMessages,
   updateUserMembership,
   createMessage,
+  updateUserAdminStatus,
+  findUserMessageByTitle,
 } from '../db/queries.js';
 
 // GET /
@@ -61,8 +63,38 @@ export const createNewMessage = async (req, res) => {
 
   const { title, message } = matchedData(req);
 
+  const existingTitle = await findUserMessageByTitle(req.user.id, title);
+
+  if (existingTitle) {
+    req.flash('errors', [
+      { msg: 'You cannot post messages with the same title.' },
+    ]);
+    return res.redirect('/create-message');
+  }
+
   const _userMessage = await createMessage(req.user.id, title, message);
 
   req.flash('success', "You've successfully created the message!");
   res.redirect('/');
+};
+
+// GET /admin-riddle
+export const getAdminAccessPage = (req, res) => {
+  if (req.user.is_admin) {
+    req.flash('success', 'You are already an administrator!');
+    return res.redirect('/');
+  }
+  res.render('admin-riddle');
+};
+
+export const postAdminRiddle = async (req, res) => {
+  const userAnswer = req.body.answer?.trim().toLowerCase();
+  if (userAnswer === process.env.ADMIN_PASSWORD) {
+    await updateUserAdminStatus(req.user.id, true);
+    req.flash('success', 'Correct! Administrative privileges granted.');
+    return res.redirect('/');
+  } else {
+    req.flash('errors', ['Incorrect password. The gate remains locked.']);
+    return res.redirect('/admin-riddle');
+  }
 };

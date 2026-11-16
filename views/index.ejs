@@ -8,7 +8,11 @@
       <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-6 sticky top-8">
         <div>
           <h2 class="text-lg font-bold text-gray-900">Dashboard</h2>
-          <p class="text-sm text-gray-500 mt-1">Hello, <span class="font-medium text-gray-700"><%= currentUser.username %></span></p>
+          <% if(locals.currentUser) { %>
+            <p class="text-sm text-gray-500 mt-1">Hello, <span class="font-medium text-gray-700"><%= currentUser.username %>!</span></p>
+          <% } else { %>
+            <p class="text-sm text-gray-500 mt-1">Hello, <span class="font-medium text-gray-700">Stranger!</span></p>
+          <% } %>
         </div>
 
         <% if(locals.success?.length) { %>
@@ -24,17 +28,26 @@
             <a href="/create-message" class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
               Create a new message
             </a>
+            <a href="/membership" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+              Join the club
+            </a>
+            <a href="/admin-riddle" id="runaway-btn" class="relative transition-all duration-100 w-full inline-flex justify-center py-2 px-4 border border-dashed border-indigo-400 rounded-md shadow-sm text-sm font-medium text-indigo-600 bg-indigo-50 hover:bg-indigo-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+              Gain Admin Access 
+            </a>
+            <form action="/logout" method="POST">
+              <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+                Log out
+              </button>
+            </form>
+          <% } else { %>
+            <a href="/register" class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+              Register
+            </a>
+            <a href="/login" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+              Log In
+            </a>
+            <p class="text-xs text-center text-gray-500 pt-2">Register if you want to leave a message!</p>
           <% } %>
-
-          <a href="/membership" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-            Join the club
-          </a>
-          
-          <form action="/logout" method="POST">
-            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
-              Log out
-            </button>
-          </form>
         </div>
       </div>
     </aside>
@@ -56,8 +69,12 @@
                 <p class="text-gray-700 text-sm whitespace-pre-line leading-relaxed"><%= message.text %></p>
               </div>
               <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500">
-                <span class="font-medium text-gray-700">Author: <%= currentUser.membership_status ? `${message.first_name} ${message.last_name}` : 'Unknown (Members Only)' %></span>
-                <span><%= currentUser.membership_status ? new Date(message.timestamp).toLocaleDateString() : '' %></span>
+                <% if(locals.currentUser) { %>
+                  <span class="font-medium text-gray-700">Author: <%= currentUser.membership_status ? `${message.first_name} ${message.last_name}` : 'Unknown (Members Only)' %></span>
+                  <span><%= currentUser.membership_status ? new Date(message.timestamp).toLocaleDateString() : '' %></span>
+                 <% } else { %>
+                  <span class="font-medium text-gray-700">Author: Unknown (Members Only)</span>
+                <% } %>
               </div>
             </div>
           <% }) %>

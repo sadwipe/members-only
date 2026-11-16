@@ -7,6 +7,8 @@ import {
   addMembership,
   getCreateMessageForm,
   createNewMessage,
+  getAdminAccessPage,
+  postAdminRiddle,
 } from '../controllers/indexController.js';
 
 import {
@@ -16,7 +18,7 @@ import {
 
 const indexRouter = express.Router();
 
-indexRouter.get('/', isAuthenticated, getIndexPage);
+indexRouter.get('/', getIndexPage);
 
 indexRouter.get('/membership', isAuthenticated, getMembershipPage);
 indexRouter.post(
@@ -33,5 +35,8 @@ indexRouter.post(
   validateMessage,
   createNewMessage
 );
+
+indexRouter.get('/admin-riddle', isAuthenticated, getAdminAccessPage);
+indexRouter.post('/admin-riddle', isAuthenticated, postAdminRiddle);
 
 export default indexRouter;
