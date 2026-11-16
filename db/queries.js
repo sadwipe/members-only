@@ -44,7 +44,7 @@ export async function createUser(firstName, lastName, username, passwordHash) {
 
 export async function getAllMessages() {
   const SQL = `
-    SELECT title, text, timestamp, first_name, last_name
+    SELECT messages.id, title, text, timestamp, first_name, last_name
     FROM messages
     JOIN users
     ON messages.user_id = users.id
@@ -98,4 +98,14 @@ export async function findUserMessageByTitle(userId, title) {
   const { rows } = await pool.query(SQL, [userId, title]);
 
   return rows[0] || null;
+}
+
+export async function deleteMessage(messageId) {
+  const SQL = `
+    DELETE
+    FROM messages
+    WHERE id = $1
+  `;
+
+  return await pool.query(SQL, [messageId]);
 }

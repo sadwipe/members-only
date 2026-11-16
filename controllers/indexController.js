@@ -6,6 +6,7 @@ import {
   createMessage,
   updateUserAdminStatus,
   findUserMessageByTitle,
+  deleteMessage,
 } from '../db/queries.js';
 
 // GET /
@@ -78,6 +79,21 @@ export const createNewMessage = async (req, res) => {
   res.redirect('/');
 };
 
+// POST /messages/:messageId/delete
+export const removeMessage = async (req, res) => {
+  const messageId = req.params.messageId;
+
+  if (messageId >= 1 && messageId <= 8) {
+    req.flash('errors', 'You are not allowed to remove this message.');
+    return res.redirect('/');
+  }
+
+  await deleteMessage(messageId);
+
+  req.flash('success', 'You succesfully deleted the message.');
+  res.redirect('/');
+};
+
 // GET /admin-riddle
 export const getAdminAccessPage = (req, res) => {
   if (req.user.is_admin) {
@@ -87,6 +103,7 @@ export const getAdminAccessPage = (req, res) => {
   res.render('admin-riddle');
 };
 
+// POST /admin-riddle
 export const postAdminRiddle = async (req, res) => {
   const userAnswer = req.body.answer?.trim().toLowerCase();
   if (userAnswer === process.env.ADMIN_PASSWORD) {

@@ -60,11 +60,11 @@ async function seed() {
   const insertMessagesQuery = `
     INSERT INTO messages (user_id, title, text)
     VALUES
-      (1, 'Welcome to the Club!', 'Glad to finally be here. Looking forward to sharing thoughts and seeing what everyone else posts.'),
-      (4, 'Server Maintenance Notice', 'Quick reminder that the local cluster will restart tonight around 02:00 for routine package updates.'),
+      (1, 'Welcome to the Clubhouse!', 'Glad to pull up a chair. Looking forward to sharing notes and seeing what everyone is brewing.'),
+      (4, 'Espresso Grinder Dial-In', 'Cleaned the burrs and dialed in a fresh bag of washed Colombian beans this morning. Sweet caramel notes right off the first pull.'),
       (2, 'Best Coffee Beans in Town', 'Does anyone have recommendations for light roasts with floral notes? Running low on Ethiopian single origins.'),
       (3, 'Reading Recommendations', 'Just finished a heavy classic novel and need something gripping to read next. Any genre welcome.'),
-      (4, 'Secret Clubhouse Rules', 'Remember: the first rule of the club is that non-members cannot see who authors the posts.'),
+      (4, 'House Rules', 'Remember: only verified members with the secret passphrase can see who wrote each note on the board.'),
       (3, 'Morning Routine Optimization', 'Cutting down screen time before 8 AM made a surprisingly big difference to my focus this week.'),
       (1, 'Weekend Running Route', 'Did an easy 8k run early this morning around the reservoir. Crisp weather and almost completely empty paths.'),
       (2, 'Pizza Dough Experiments', 'Switched from a quick 2-hour yeast proof to a 20-hour cold ferment. The crust texture and flavor are on another level.');

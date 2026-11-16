@@ -1,6 +1,8 @@
 import express from 'express';
 
-import isAuthenticated from '../middleware/isAuthenticated.js';
+import isAuthenticated, {
+  isAdmin,
+} from '../middleware/authenticationMiddleware.js';
 import {
   getIndexPage,
   getMembershipPage,
@@ -9,6 +11,7 @@ import {
   createNewMessage,
   getAdminAccessPage,
   postAdminRiddle,
+  removeMessage,
 } from '../controllers/indexController.js';
 
 import {
@@ -34,6 +37,13 @@ indexRouter.post(
   isAuthenticated,
   validateMessage,
   createNewMessage
+);
+
+indexRouter.post(
+  '/messages/:messageId/delete',
+  isAuthenticated,
+  isAdmin,
+  removeMessage
 );
 
 indexRouter.get('/admin-riddle', isAuthenticated, getAdminAccessPage);
