@@ -8,7 +8,8 @@
     "seed": "node db/populatedb.js",
     "prepare": "husky",
     "format": "prettier --write .",
-    "lint": "eslint --fix"
+    "lint": "eslint --fix",
+    "start": "node server.js"
   },
   "lint-staged": {
     "**/*.{js,json,css,md}": [
