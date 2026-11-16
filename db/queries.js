@@ -44,8 +44,10 @@ export async function createUser(firstName, lastName, username, passwordHash) {
 
 export async function getAllMessages() {
   const SQL = `
-    SELECT *
-    FROM messages;
+    SELECT title, text, timestamp, first_name, last_name
+    FROM messages
+    JOIN users
+    ON messages.user_id = users.id
   `;
 
   const { rows } = await pool.query(SQL);

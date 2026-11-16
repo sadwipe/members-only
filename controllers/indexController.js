@@ -10,8 +10,6 @@ import {
 export const getIndexPage = async (req, res) => {
   const messages = await getAllMessages();
 
-  // console.log(messages);
-
   res.render('index', { messages });
 };
 

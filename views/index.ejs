@@ -1,44 +1,74 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-gray-50">
 <%- include('head', { title: 'Homepage' }) %>
-<body class="h-full flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <% if(locals.currentUser) { %>
-    <a href="/create-message" class="mb-6 inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-      Create a new message
-    </a>
-  <% } %>
-
-  <div class="max-w-md w-full space-y-6 bg-white p-8 rounded-xl shadow-lg border border-gray-100 text-center">
-    <h2 class="text-2xl font-extrabold text-gray-900">This is a protected route</h2>
-
-    <% if(locals.success?.length) { %>
-      <ul class="space-y-1 text-left">
-        <% success.forEach(message => { %>
-          <li class="text-sm text-green-600 bg-green-50 border border-green-200 p-3 rounded-md"><%= message %></li>
-        <% }) %>
-      </ul>
-    <% } %>
-
-    <div class="pt-2 space-y-3">
-      <a href="/membership" class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-        Join the club
-      </a>
-      
-      <form action="/logout" method="POST">
-        <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
-          Log out
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <% if(locals.messages?.length) { %>
-    <div class="max-w-md w-full mt-6 space-y-4">
-      <% messages.forEach(message => { %>
-        <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 text-left">
+<body class="min-h-full bg-gray-50 flex flex-col">
+  <div class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow grid grid-cols-1 lg:grid-cols-4 gap-8">
+    
+    <aside class="lg:col-span-1 space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 space-y-6 sticky top-8">
+        <div>
+          <h2 class="text-lg font-bold text-gray-900">Dashboard</h2>
+          <p class="text-sm text-gray-500 mt-1">Hello, <span class="font-medium text-gray-700"><%= currentUser.username %></span></p>
         </div>
-      <% }) %>
-    </div>
-  <% } %>
+
+        <% if(locals.success?.length) { %>
+          <ul class="space-y-1">
+            <% success.forEach(message => { %>
+              <li class="text-xs text-green-600 bg-green-50 border border-green-200 p-2.5 rounded-md"><%= message %></li>
+            <% }) %>
+          </ul>
+        <% } %>
+
+        <div class="space-y-3 pt-2 border-t border-gray-100">
+          <% if(locals.currentUser) { %>
+            <a href="/create-message" class="w-full inline-flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+              Create a new message
+            </a>
+          <% } %>
+
+          <a href="/membership" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+            Join the club
+          </a>
+          
+          <form action="/logout" method="POST">
+            <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-red-600 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors">
+              Log out
+            </button>
+          </form>
+        </div>
+      </div>
+    </aside>
+
+    <main class="lg:col-span-3 space-y-6">
+      <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex justify-between items-center">
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">Community Feed</h1>
+          <p class="text-sm text-gray-500">Recent posts shared by members.</p>
+        </div>
+      </div>
+
+      <% if(locals.messages?.length) { %>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <% messages.forEach(message => { %>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <h3 class="text-lg font-semibold text-indigo-600"><%= message.title %></h3>
+                <p class="text-gray-700 text-sm whitespace-pre-line leading-relaxed"><%= message.text %></p>
+              </div>
+              <div class="pt-4 border-t border-gray-100 flex justify-between items-center text-xs text-gray-500">
+                <span class="font-medium text-gray-700">Author: <%= currentUser.membership_status ? `${message.first_name} ${message.last_name}` : 'Unknown (Members Only)' %></span>
+                <span><%= currentUser.membership_status ? new Date(message.timestamp).toLocaleDateString() : '' %></span>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <div class="bg-white p-12 rounded-xl shadow-sm border border-gray-100 text-center text-gray-500">
+          No messages found. Be the first to create one!
+        </div>
+      <% } %>
+    </main>
+
+  </div>
 </body>
 </html>
