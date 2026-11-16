@@ -10,9 +10,9 @@
       </p>
     </div>
 
-    <% if(locals.message) { %>
+    <% if(locals.message?.length) { %>
       <div class="p-3 bg-red-50 border border-red-200 rounded-md">
-        <p class="text-sm text-red-600 text-center"><%= message %></p>
+        <p class="text-sm text-red-600 text-center"><%= message[0] %></p>
       </div>
     <% } %>
 

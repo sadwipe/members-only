@@ -9,7 +9,10 @@ import {
   createNewMessage,
 } from '../controllers/indexController.js';
 
-import { validateMembership } from '../middleware/validator.js';
+import {
+  validateMembership,
+  validateMessage,
+} from '../middleware/validator.js';
 
 const indexRouter = express.Router();
 
@@ -24,6 +27,11 @@ indexRouter.post(
 );
 
 indexRouter.get('/create-message', isAuthenticated, getCreateMessageForm);
-indexRouter.post('/create-message', isAuthenticated, createNewMessage);
+indexRouter.post(
+  '/create-message',
+  isAuthenticated,
+  validateMessage,
+  createNewMessage
+);
 
 export default indexRouter;

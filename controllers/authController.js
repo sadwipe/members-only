@@ -6,7 +6,8 @@ import { createUser as addUserToDatabase } from '../db/queries.js';
 
 // GET /register
 export const getRegisterForm = (req, res) => {
-  res.render('register');
+  const formData = req.flash('formData')[0] || {};
+  res.render('register', { formData });
 };
 
 // POST /register
@@ -14,7 +15,9 @@ export const createUser = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).render('register', { errors: errors.array() });
+    req.flash('formData', req.body);
+    req.flash('errors', errors.array());
+    return res.redirect('/register');
   }
 
   const {
@@ -52,7 +55,7 @@ export const authenticateUser = (req, res, next) => {
       return next(err);
     }
     if (!user) {
-      req.flash('error', info?.message || 'Invalid credentials');
+      req.flash('errors', info?.message || 'Invalid credentials');
       return res.redirect('/login');
     }
 

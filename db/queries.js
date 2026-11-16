@@ -61,3 +61,15 @@ export async function updateUserMembership(id) {
   `;
   return await pool.query(SQL, [id]);
 }
+
+export async function createMessage(id, title, message) {
+  const SQL = `
+    INSERT
+    INTO messages (user_id, title, text)
+    VALUES ($1, $2, $3)
+    RETURNING title, text as "message"
+  `;
+
+  const { rows } = await pool.query(SQL, [id, title, message]);
+  return rows[0] || null;
+}

@@ -1,5 +1,4 @@
 import { body } from 'express-validator';
-
 import { findUserByUsername } from '../db/queries.js';
 
 function nameValidator(fieldname, label, { min = 2, max = 50 }) {
@@ -25,7 +24,7 @@ export const validateNewUser = [
     .isAlphanumeric('en-US')
     .withMessage('Username must consist only of letters and numbers.')
     .isLength({ min: 3, max: 20 })
-    .withMessage('Username length must be between 3 and 30 characters.')
+    .withMessage('Username length must be between 3 and 20 characters.')
     .custom(async (username) => {
       const foundUser = await findUserByUsername(username);
       if (foundUser) {
@@ -41,7 +40,7 @@ export const validateNewUser = [
   body('confirm-password')
     .trim()
     .notEmpty()
-    .withMessage('Please confirm your password')
+    .withMessage('Please confirm your password.')
     .custom((value, { req }) => {
       if (value !== req.body.password) {
         throw new Error('Passwords do not match.');
@@ -53,6 +52,21 @@ export const validateNewUser = [
 export const validateMembership = body('membership-code')
   .trim()
   .notEmpty()
-  .withMessage('Message required')
+  .withMessage('Membership code is required.')
   .isLength({ min: 3, max: 20 })
-  .withMessage('The membership code has between 3 and 20 characters.');
+  .withMessage('Membership code length must be between 3 and 20 characters.');
+
+export const validateMessage = [
+  body('title')
+    .trim()
+    .notEmpty()
+    .withMessage('Title is required.')
+    .isLength({ min: 3, max: 25 })
+    .withMessage('Title must be between 3 and 25 characters.'),
+  body('message')
+    .trim()
+    .notEmpty()
+    .withMessage('Message is required.')
+    .isLength({ min: 3, max: 300 })
+    .withMessage('Message must be between 3 and 300 characters.'),
+];
