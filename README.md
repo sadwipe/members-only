@@ -14,6 +14,9 @@ A secure, full-stack message board web application where users can register acco
   <br>
   <img src="./public/images/3.png" width="48%" alt="Login" />
   <img src="./public/images/4.png" width="48%" alt="Member View" />
+  <br>
+  <img src="./public/images/5.png" width="48%" alt="Create Message" />
+  <img src="./public/images/6.png" width="48%" alt="Admin Access" />
 </p>
 
 ---
