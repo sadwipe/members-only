@@ -6,6 +6,18 @@ A secure, full-stack message board web application where users can register acco
 
 ---
 
+## App Screenshots
+
+<p align="center">
+  <img src="./public/images/1.png" width="48%" alt="Landing Page" />
+  <img src="./public/images/2.png" width="48%" alt="Register" />
+  <br>
+  <img src="./public/images/3.png" width="48%" alt="Login" />
+  <img src="./public/images/4.png" width="48%" alt="Member View" />
+</p>
+
+---
+
 ## Tech Stack & Architecture
 
 - **Frontend:** EJS (Embedded JS Templates)
